@@ -24,27 +24,34 @@ void insertar_stack(NODE** root, int value)
     curr->next = new_node;
 }
 
-void inicializar_stack(NODE *root)
+void inicializar_stack(NODE *root, char **argv, int argc)
 {
-    root->x = 7;
-    insertar_stack(&root, 5);
-    insertar_stack(&root, 77);
+    root->x = ft_atoi(argv[1]);
+    insertar_stack(&root, ft_atoi(argv[2]));
+    insertar_stack(&root, ft_atoi(argv[3]));
+    
 }
 
 int main(int argc, char **argv)
 {
-    NODE *stackA = malloc(sizeof(NODE));
-    
-    inicializar_stack(stackA);
-    //Printa el stack
-    NODE *curr = malloc(sizeof(NODE));
-    curr = stackA;
-    
-    
-    while(curr != NULL)
+    if (argc > 2)
     {
-        printf("%d\n", curr->x);
-        curr = curr->next;
+        NODE *stackA = malloc(sizeof(NODE));
+        NODE *stackB = malloc(sizeof(NODE));
+    
+        inicializar_stack(stackA, argv, argc);
+        //Printa el stack
+        NODE *curr = malloc(sizeof(NODE));
+        curr = stackA;
+    
+        while(curr != NULL)
+        {
+            printf("%d\n", curr->x);
+            curr = curr->next;
+        }
     }
-    return 0;
+    else
+    {
+        write(1, "Error", 5);
+    }
 }
