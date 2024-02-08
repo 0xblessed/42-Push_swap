@@ -1,28 +1,42 @@
-SRCS		= push_swap.c
+NAME= push_swap.a
 
-OBJS		= ${SRCS:.c=.o}
+SRC= push_swap.c
 
-NAME		= push_swap.a
+OBJ1=$(SRC:.c=.o)
 
-CC			= cc
+OBJ=$(OBJ1:.m=.o)
 
-RM			= rm -f
+$(NAME):	$(OBJ)
+	@make -sC ./libft/
+	@cp libft/libft.a .
+	@ar -rc $(NAME) $(OBJ)
+	@ranlib $(NAME)
+	@echo "\n\033[36m"****************\\nCompiled...\\n****************\\n"\033[0m\n"
 
-FLAGS		= -Wall -Werror -Wextra
+run:
+	@clear
+	@echo "\n\033[36m"****************\\nStart...\\n****************\\n"\033[0m\n"
+	@gcc -Wextra -Werror -Wall ./push_swap.c $(SRC) libft.a -o push_swap
 
-.c.o:
-			${CC} ${FLAGS} -c $< -o ${<:.c=.o}
+bonus:
+		@clear
+		@echo "\n\033[36m"****************\\nStart...\\n****************\\n"\033[0m\n"
+		@gcc -Wextra -Werror -Wall ./checker.c $(SRC) libft.a -o checker
 
-${NAME}:	${OBJS}
-			ar rc  ${NAME} ${OBJS}
-			ranlib ${NAME}
-
-all:		${NAME}
+all: $(NAME)
 
 clean:
-			${RM} ${OBJS}
+	@rm -f $(NAME) $(OBJ)
+	@make -sC ./libft/ fclean
+	@clear
+	@echo "\n\033[36m"****************\\nDeleted files...\\n****************\\n"\033[0m\n"
 
-fclean:		clean
-			${RM} ${NAME}
+fclean: clean
+		@rm -rf libft.a
+		@rm -rf push_swap
+		@rm -rf checker
+		@rm -rf *.t
+	
+re: clean all
 
-re:			fclean all bonus
+.PHONY: all clean re run

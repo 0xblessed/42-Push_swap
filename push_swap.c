@@ -1,12 +1,6 @@
 #include "push_swap.h"
+# include    "libft/libft.h"
 
-int main()
-{
-    printf("Hola Mundo\n");
-    size_t i = ft_strlen("CACA");
-    printf("%d", (int)i);
-}
-/*
 void insertar_stack(NODE** root, int value)
 {
     NODE* new_node = malloc(sizeof(NODE));
@@ -53,4 +47,4 @@ int main(int argc, char **argv)
         curr = curr->next;
     }
     return 0;
-}*/
+}
