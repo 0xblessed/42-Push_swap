@@ -53,55 +53,42 @@ void inicializar_stack(NODE *root, char **argv, int argc)
     
 }
 
-/*int main(int argc, char **argv)
-{
-    if (argc < 1)
-    {
-        NODE *stackA = malloc(sizeof(NODE));
-        NODE *stackB = malloc(sizeof(NODE));
-    
-        
-        if (argc == 2)
-        {
-            inicializar_stack(stackA, ft_split(argv[1], ' '), -1);
-        }
-        else
-        {
-            inicializar_stack(stackA, argv, argc);
-        }
-        
-        //Printa el stack
-        NODE *curr = malloc(sizeof(NODE));
-        curr = stackA;
-    
-        while(curr != NULL)
-        {
-            printf("%d\n", curr->x);
-            curr = curr->next;
-        }
-    }
-    else
-    {
-        write(1, "Error", 5);
-    }
-}*/
 int main(int argc, char **argv) {
+
+    int alpha = 0;
+
     if (argc > 1) {
         NODE *stackA = malloc(sizeof(NODE));
         NODE *stackB = malloc(sizeof(NODE));
 
         if (argc == 2) {
-            inicializar_stack(stackA, ft_split(argv[1], ' '), -1);
+            int j = 0;
+            while(argv[1][j] != '\0')
+            {
+                alpha = ft_isalpha(argv[1][j]);
+                if (alpha)
+                    break;
+                j++;
+            }
+            if (alpha)
+                write(1, "Error\n", 6);
+            else
+                inicializar_stack(stackA, ft_split(argv[1], ' '), -1);
         } else {
+            // falta implementar control errores de caracteres en argumentos sueltos
             inicializar_stack(stackA, argv, argc);
         }
 
         // Imprime el stack
-        NODE *curr = stackA;
+        if (!alpha)
+        {
+            NODE *curr = stackA;
 
-        while (curr != NULL) {
-            printf("%d\n", curr->x);
-            curr = curr->next;
+            while (curr != NULL)
+            {
+                printf("%d\n", curr->x);
+                curr = curr->next;
+            }
         }
     } else {
         write(1, "Error\n", 6);
