@@ -1,6 +1,17 @@
-#include "push_swap.h"
-# include    "libft/libft.h"
+#include     "push_swap.h"
+#include    "libft/libft.h"
 
+void imprime_stack(NODE *stackA)
+{
+    NODE *curr = stackA;
+
+    printf("Stack A:\tStack B\n");
+    while (curr != NULL)
+    { 
+        printf("Value : %d \tIndice: %d\n", curr->x, curr->index);
+        curr = curr->next;
+    }
+}
 void insertar_stack(NODE** root, int value)
 {
     NODE* new_node = malloc(sizeof(NODE));
@@ -50,7 +61,35 @@ void inicializar_stack(NODE *root, char **argv, int argc)
         }
     }
     
-    
+}
+
+void asignacion_indices(NODE* head) {
+    NODE* current = head;
+    int iterador_indice = 0;
+
+    while (current != NULL) {
+        int min_value = INT_MAX;
+        NODE* min_node = NULL;
+        NODE* temp = head; // Utilizamos un nodo temporal para iterar sobre la lista internamente
+
+        // Encuentra el nodo con el valor más pequeño que no haya sido asignado previamente
+        while (temp != NULL) {
+            if (temp->x < min_value && temp->index == -1) {
+                min_value = temp->x;
+                min_node = temp;
+            }
+            temp = temp->next;
+        }
+
+        // Asigna el índice al nodo con el valor más pequeño
+        if (min_node != NULL)
+        {
+            min_node->index = iterador_indice;
+            iterador_indice++;
+        }
+        
+        current = current->next; // Avanzamos al siguiente nodo
+    }
 }
 
 int main(int argc, char **argv) {
@@ -89,7 +128,6 @@ int main(int argc, char **argv) {
         else
         {
             // falta implementar control errores de caracteres en argumentos sueltos
-            /////////////////////
             while (argv[i] != NULL)
             {
                 j = 0;
@@ -109,20 +147,42 @@ int main(int argc, char **argv) {
                 write(1, "Error\n", 6);
             else 
                 inicializar_stack(stackA, argv, argc);
-            /////////////////
+        }
+        //////////////////////////
+        /*  Stack inicializado  */
+        //////////////////////////
+        if (!alpha) //stack antes de modificarse
+        {
+            imprime_stack(stackA);
         }
 
-                    // Imprime el stack
-                        if (!alpha)
-                        {
-                            NODE *curr = stackA;
+        ///////////////////////////////////////
+        /*  Asignarle indices a los numeros  */
+        ///////////////////////////////////////
 
-                            while (curr != NULL)
-                            {
-                                printf("%d\n", curr->x);
-                                curr = curr->next;
-                            }
-                        }
+        NODE *curr = stackA;
+
+        while (curr != NULL)
+        {
+            curr->index = -1;
+            curr = curr->next;
+        }
+        if (!alpha)
+        {
+            printf("Supuestamente esto ha cambiado y ahora imprime todo -1 \n");
+            imprime_stack(stackA);
+        }
+
+        asignacion_indices(stackA);
+        
+        //////////////////////////
+        /*  Imprime el stack    */
+        //////////////////////////
+        if (!alpha)
+        {
+            printf("Supuestamente esto ha cambiado y ahora imprime los indices\n");
+            imprime_stack(stackA);
+        }
     } else {
         write(1, "Error\n", 6);
     }
