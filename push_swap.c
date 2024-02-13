@@ -5,7 +5,7 @@ void imprime_stack(NODE *stackA)
 {
     NODE *curr = stackA;
 
-    printf("Stack A:\tStack B\n");
+    printf("Stack:\n");
     while (curr != NULL)
     { 
         printf("Value : %d \tIndice: %d\n", curr->x, curr->index);
@@ -92,6 +92,56 @@ void asignacion_indices(NODE* head) {
     }
 }
 
+void ra(NODE **stack) {
+    if (*stack == NULL || (*stack)->next == NULL) {
+        // Si la pila está vacía o tiene solo un nodo, no hay nada que hacer
+        return;
+    }
+
+    NODE *current = *stack;
+    NODE *second = (*stack)->next;
+
+    // Recorre la lista enlazada hasta llegar al último nodo
+    while (current->next != NULL) {
+        current = current->next;
+    }
+
+    // Hace que el último nodo apunte al primer nodo
+    current->next = *stack;
+
+    // Actualiza el tope de la pila al segundo nodo
+    *stack = second;
+
+    // Establece el campo next del nuevo último nodo a NULL
+    current->next->next = NULL;
+}
+
+void inserta_arriba(NODE *node, NODE **stackB)
+{
+    node->next = *stackB;
+    *stackB = node;
+}
+
+void pb(NODE** stackA, NODE** stackB)
+{
+    if (*stackA == NULL) {
+        return;
+    }
+    
+    // Crear un nuevo nodo y copiar los datos del nodo superior de stackA
+    NODE* nuevo_nodo = malloc(sizeof(NODE));
+    nuevo_nodo->index = (*stackA)->index;
+    nuevo_nodo->next = NULL;
+
+    // Mover el nodo superior de stackA a stackB
+    inserta_arriba(nuevo_nodo, stackB);
+
+    // Eliminar el nodo superior de stackA
+    NODE* temp = *stackA;
+    *stackA = (*stackA)->next;
+    free(temp);
+}
+
 int main(int argc, char **argv) {
 
     int alpha = 0;
@@ -175,6 +225,13 @@ int main(int argc, char **argv) {
 
         asignacion_indices(stackA);
         
+
+        //////////////////////////
+        /*  hago un pa y un ra    */
+        //////////////////////////
+            printf("Stack B");
+            imprime_stack(stackB);
+
         //////////////////////////
         /*  Imprime el stack    */
         //////////////////////////
