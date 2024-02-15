@@ -118,8 +118,18 @@ void ra(NODE **stack) {
 
 void inserta_arriba(NODE *node, NODE **stackB)
 {
-    node->next = *stackB;
-    *stackB = node;
+    if (*stackB == NULL)
+    {
+        *stackB = node;
+    }
+    else
+    {
+        node->next = *stackB;
+        *stackB = node;
+    }
+
+    /*node->next = *stackB;
+    *stackB = node;*/
 }
 
 void pb(NODE** stackA, NODE** stackB)
@@ -158,7 +168,7 @@ int main(int argc, char **argv) {
         }
         
         NODE *stackA = malloc(sizeof(NODE));
-        NODE *stackB = malloc(sizeof(NODE));
+        NODE *stackB = NULL; //malloc(sizeof(NODE));
 
         if (argc == 2)
         {
@@ -227,11 +237,33 @@ int main(int argc, char **argv) {
         
 
         //////////////////////////
-        /*  hago un pa y un ra    */
+        /*  PRUEBAS DEL PB Y RA */
         //////////////////////////
-            printf("Stack B");
+        /*   printf("\nAntes PB\n");
+            printf("\nStack A\n");
+            imprime_stack(stackA);
+            printf("\nStack B\n");
             imprime_stack(stackB);
-
+            printf("\nHacemos PB\n");
+            pb(&stackA, &stackB);
+            printf("\nStack A\n");
+            imprime_stack(stackA);
+            printf("\nStack B\n");
+            imprime_stack(stackB);
+            printf("\nHacemos otro PB\n");
+            pb(&stackA, &stackB);
+            printf("\nStack A\n");
+            imprime_stack(stackA);
+            printf("\nStack B\n");
+            imprime_stack(stackB);
+            printf("\nHacemos un RA\n");
+            ra(&stackA);
+            printf("\nStack A\n");
+            imprime_stack(stackA);
+            printf("\nStack B\n");
+            imprime_stack(stackB);
+        */
+        
         //////////////////////////
         /*  Imprime el stack    */
         //////////////////////////
