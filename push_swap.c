@@ -1,6 +1,7 @@
 #include    "push_swap.h"
 #include    "libft/libft.h"
 
+
 int main(int argc, char **argv) {
 
     int alpha = 0;
@@ -8,7 +9,8 @@ int main(int argc, char **argv) {
     int i = 1;
     int found_alpha = 0;
 
-    if (argc > 1) {
+    if (argc > 1)
+    {
         
         if (ft_strlen(argv[1]) == 0)
         {
@@ -57,114 +59,60 @@ int main(int argc, char **argv) {
             else 
                 inicializar_stack(stackA, argv, argc);
         }
-        //////////////////////////
-        /*  Stack inicializado  */
-        //////////////////////////
-        if (!alpha) //stack antes de modificarse
+        if (alpha) //stack antes de modificarse
         {
-            printf("\nStackA\n");
-            imprime_stack(stackA);
-            printf("\nStackB\n");
-            imprime_stack(stackB);
+            return 0;
         }
+        printf("\nStackA\n");
+        imprime_stack(stackA);
+        printf("\nStackB\n");
+        imprime_stack(stackB);
 
-        ///////////////////////////////////////
-        /*  Asignarle indices a los numeros  */
-        ///////////////////////////////////////
+        establecer_valor_1(&stackA);
 
-        NODE *curr = stackA;
+        printf("Todos los indices son -1\n");
 
-        while (curr != NULL)
-        {
-            curr->index = -1;
-            curr = curr->next;
-        }
-        if (!alpha)
-        {
-            //printf("Supuestamente esto ha cambiado y ahora imprime todo -1 \n");
-            //imprime_stack(stackA);
-        }
+        imprime_stack(stackA);
+
+        printf("Asignamos todos los indices y el valor 0\n");
 
         asignacion_indices(stackA);
-        
-        ///////////////////////////////////////////////////////////////////////
 
-        curr = stackA; //conseguimos el indice más alto
-        while (curr->next != NULL)
-        {
-            curr = curr->next;
-        }
-        int size_stack = curr->index;
-        int i = 0;
+        establecer_valor_0(&stackA);
+        
+        imprime_stack(stackA);
+
+        NODE *curr = malloc(sizeof(NODE));
+        
+        curr=copiar_lista(stackA);
+
         int digito = 0;
-        /*
-        curr = stackA;
-        printf("ayiyiyi");imprime_stack(curr); printf("ayiyiyi\n\n");
-        while(curr != NULL)
+
+        printf("\n\t\t EMPEZAMOS BUCLE \t\t\n");
+        while (curr != NULL)
         {
-            if (((curr->index>>digito)&1) == 1)
+            if((curr->index>>digito & 1) == 1)
             {
-                pb(&stackA, &stackB);printf("\n\t\t\tPB\t\t\t\n");
+                rotate(&stackA);
+                printf("%d\n", (curr->index>>digito & 1));
+                printf("\nRa\n");
             }
             else
             {
-                ra(&stackA);printf("\n\t\t\tRA\t\t\t\n");
+                push(&stackA, &stackB);
+                printf("\nPb\n");
             }
+            printf("%d\n", curr->index);
             curr = curr->next;
         }
-        printf("\n\n OPA OPA\n\n");
-            printf("\nStackA\n");
-            imprime_stack(stackA);
-            printf("\nStackB\n");
-            imprime_stack(stackB);
-        printf("\n\n OPA OPA\n\n");
-        //conectar(&stackA, &stackB);
-        //digito++;*/
-        
-
-        curr = stackA;
-
-        printf("ayiyiyi");
-        imprime_stack(curr);
-        printf("ayiyiyi\n\n");
-        
-        int num = 0;
-        while(curr != NULL)
-        {
-            num = (curr->index>>digito);
-            if ((num&1) == 1)
-            {
-                pb(&stackA, &stackB);
-                printf("\nStackA\n");
-                imprime_stack(stackA);
-                printf("\nStackB\n");
-                imprime_stack(stackB);
-                printf("\n\t\t\tPB\t\t\t\n");
-            }
-            else
-            {
-                ra(&stackA);
-                printf("\n\t\t\tRA\t\t\t\n");
-            }
-            curr = curr->next;
-        }
-
-
-        //////////////////////////////////////////////////////////////////////////////
-        //////////////////////////
-        /*  Imprime el stack    */
-        //////////////////////////
-        if (!alpha)
-        {
-            printf("Supuestamente esto ha cambiado y ahora imprime los indices\n");
-            printf("\nStackA\n");
-            imprime_stack(stackA);
-            printf("\nStackB\n");
-            imprime_stack(stackB);
-        }
-    } else {
+        conectar(&stackA, &stackB);
+        printf("\nStackA\n");
+        imprime_stack(stackA);
+        printf("\nStackB\n");
+        imprime_stack(stackB);
+    } 
+    else 
         write(1, "Error\n", 6);
-    }
 
     return 0;
 }

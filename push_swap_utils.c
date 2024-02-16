@@ -1,5 +1,27 @@
 #include    "push_swap.h"
 
+void establecer_valor_1(NODE **stack)
+{
+    NODE *curr = *stack;
+
+    while (curr != NULL)
+    {
+        curr->index = -1;
+        curr = curr->next;
+    }     
+}
+
+void establecer_valor_0(NODE **stack)
+{
+    NODE *curr = *stack;
+
+    while (curr != NULL)
+    {
+        curr->x = 0;
+        curr = curr->next;
+    }     
+}
+
 int	ft_atoi(const char *nb)
 {
 	int	i;
@@ -100,20 +122,19 @@ void asignacion_indices(NODE* head) {
 
         // Encuentra el nodo con el valor más pequeño que no haya sido asignado previamente
         while (temp != NULL) {
-            if (temp->x < min_value && temp->index == -1) {
+            if (temp->x < min_value && temp->index == -1)
+            {
                 min_value = temp->x;
                 min_node = temp;
             }
             temp = temp->next;
         }
-
         // Asigna el índice al nodo con el valor más pequeño
         if (min_node != NULL)
         {
             min_node->index = iterador_indice;
             iterador_indice++;
-        }
-        
+        } 
         current = current->next; // Avanzamos al siguiente nodo
     }
 }
@@ -186,11 +207,64 @@ void conectar(NODE **stackA, NODE **stackB)
     }
 }
 
+void push(NODE** stackA, NODE** stackB)
+{
+    if (*stackA == NULL) {
+        return;
+    }
+    NODE* temp = *stackA;
+    *stackA = (*stackA)->next;
+    temp->next = *stackB;
+    *stackB = temp;
+}
 
+void rotate(NODE** stack) {
+    if (*stack == NULL || (*stack)->next == NULL) {
+        return;
+    }
+    NODE* temp = *stack;
+    while (temp->next->next != NULL) {
+        temp = temp->next;
+    }
+    NODE* lastNode = temp->next;
+    temp->next = NULL;
+    lastNode->next = *stack;
+    *stack = lastNode;
+}
 
+NODE* copiar_lista(NODE* head) {
+    if (head == NULL) {
+        return NULL; // Si la lista está vacía, la copia también estará vacía
+    }
 
+    // Creamos el primer nodo de la copia
+    NODE* newHead = malloc(sizeof(NODE));
+    newHead->index = head->index;
+    newHead->x = head->x;
+    newHead->next = NULL; // La siguiente se actualizará en la iteración
 
+    // Creamos un puntero para recorrer la lista original
+    NODE* currentOriginal = head->next;
+    // Creamos un puntero para recorrer la lista copiada
+    NODE* currentCopy = newHead;
 
+    // Recorremos la lista original y creamos nodos para la copia
+    while (currentOriginal != NULL) {
+        NODE* newNode = malloc(sizeof(NODE));
+        newNode->index = currentOriginal->index;
+        newNode->x = currentOriginal->x;
+        newNode->next = NULL;
+
+        // Enlazamos el nuevo nodo al final de la lista copiada
+        currentCopy->next = newNode;
+
+        // Avanzamos al siguiente nodo en ambas listas
+        currentOriginal = currentOriginal->next;
+        currentCopy = currentCopy->next;
+    }
+
+    return newHead; // Devolvemos la cabeza de la lista copiada
+}
 
 
 
