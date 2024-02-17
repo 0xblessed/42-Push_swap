@@ -89,23 +89,69 @@ int main(int argc, char **argv) {
         int digito = 0;
 
         printf("\n\t\t EMPEZAMOS BUCLE \t\t\n");
-        while (curr != NULL)
+        int sorted = isSorted(stackA);
+        int k = 0;
+        while(sorted == 0)
         {
-            if((curr->index>>digito & 1) == 1)
+            while (curr != NULL)
             {
-                rotate(&stackA);
-                printf("%d\n", (curr->index>>digito & 1));
-                printf("\nRa\n");
+                int num = curr->index>>digito & 1;
+                if(num == 1)
+                {
+                    ra(&stackA);
+                    printf("\nRa\n");
+                }
+                else
+                {
+                    push(&stackA, &stackB);
+                    printf("\nPb\n");
+                }
+                curr = curr->next;
             }
-            else
-            {
-                push(&stackA, &stackB);
-                printf("\nPb\n");
-            }
-            printf("%d\n", curr->index);
-            curr = curr->next;
+            conectar(&stackA, &stackB);
+            sorted = isSorted(stackA);
+            digito++;
+            curr=copiar_lista(stackA);
         }
-        conectar(&stackA, &stackB);
+        /*while (curr != NULL)
+        {
+                int num = curr->index>>digito & 1;
+                if(num == 1)
+                {
+                    ra(&stackA);
+                    printf("%d\n", (curr->index>>digito & 1));
+                    printf("\nRa\n");
+
+                    printf("MIRAMOS SI HA HECHO EL RA BIEN\n");
+                    printf("StackA :\n");imprime_stack(stackA);
+                    printf("StackB :\n");imprime_stack(stackB);
+                }
+                else
+                {
+                    push(&stackA, &stackB);
+                    printf("\nPb\n");
+                    printf("MIRAMOS SI HA HECHO EL PB BIEN\n");
+                    printf("StackA :\n");imprime_stack(stackA);
+                    printf("StackB :\n");imprime_stack(stackB);
+                }
+                printf("%d\n", k);k++;
+                curr = curr->next;
+        }
+            conectar(&stackA, &stackB);
+            printf("MIRAMOS SI STACK ESTA CONECTADO\n");
+            imprime_stack(stackA);
+            imprime_stack(stackB);
+            printf("MIRAMOS SI STACK ESTA SORTED\n");
+            sorted = isSorted(stackA);
+            printf("\t\t%d\t\t", sorted);
+            digito++;printf("DIGITO : %d", digito);
+
+            curr=copiar_lista(stackA);
+            printf("ACTUALIZAMOS CURR PARA QUE TENGA EL STACK A DE NUEVO\n");
+            imprime_stack(curr);
+            
+        
+        printf("OPAOPAOPAOPAOPAOPAOA\n\n");*/
         printf("\nStackA\n");
         imprime_stack(stackA);
         printf("\nStackB\n");

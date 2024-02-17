@@ -12,7 +12,6 @@ typedef struct NODE
     int x;
     int index;
     struct NODE *next;
-    struct NODE *previous;
 
 }NODE;
 
@@ -31,5 +30,6 @@ void conectar(NODE **stackA, NODE **stackB);
 void rotate(NODE** stack);
 void push(NODE** stackA, NODE** stackB);
 NODE* copiar_lista(NODE* head);
+int isSorted(NODE *stack);
 
 #endif

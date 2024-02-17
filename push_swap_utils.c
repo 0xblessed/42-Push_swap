@@ -204,6 +204,7 @@ void conectar(NODE **stackA, NODE **stackB)
     while(*stackB != NULL)
     {
         pb(stackB, stackA);
+        printf("\nPb\n");
     }
 }
 
@@ -266,6 +267,20 @@ NODE* copiar_lista(NODE* head) {
     return newHead; // Devolvemos la cabeza de la lista copiada
 }
 
-
+int isSorted(NODE *stack)
+{
+    NODE *curr = stack;
+    int before = -1;
+    while (curr != NULL)
+    {
+        if(before > curr->index)
+        {
+            return 0;
+        }
+        before = curr->index;
+        curr = curr->next;
+    }
+    return 1;
+}
 
 
