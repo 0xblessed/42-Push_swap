@@ -25,11 +25,12 @@ void inicializar_stack(NODE *root, char **argv, int argc);
 void asignacion_indices(NODE* head);
 void ra(NODE **stack);
 void inserta_arriba(NODE *node, NODE **stackB);
-void pb(NODE** stackA, NODE** stackB);
-void conectar(NODE **stackA, NODE **stackB);
-void rotate(NODE** stack);
+void conectar(NODE **stackA, NODE **stackB, int k);
 void push(NODE** stackA, NODE** stackB);
 NODE* copiar_lista(NODE* head);
 int isSorted(NODE *stack);
+int control_errores_string(char **argv);
+int control_errores_sueltos(char **argv);
+void radix_sort(NODE** stackA, NODE** stackB);
 
 #endif

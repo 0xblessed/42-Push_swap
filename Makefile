@@ -1,6 +1,6 @@
 NAME= push_swap.a
 
-SRC= push_swap.c	push_swap_utils.c
+SRC= push_swap.c	push_swap_utils.c	push_swap_coms.c
 
 OBJ1=$(SRC:.c=.o)
 

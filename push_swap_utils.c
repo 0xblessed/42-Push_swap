@@ -1,4 +1,5 @@
 #include    "push_swap.h"
+#include    "libft/libft.h"
 
 void establecer_valor_1(NODE **stack)
 {
@@ -20,6 +21,15 @@ void establecer_valor_0(NODE **stack)
         curr->x = 0;
         curr = curr->next;
     }     
+}
+
+int	ft_isalpha(int c)
+{
+	if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+	{
+		return (1);
+	}
+	return (0);
 }
 
 int	ft_atoi(const char *nb)
@@ -139,30 +149,6 @@ void asignacion_indices(NODE* head) {
     }
 }
 
-void ra(NODE **stack) {
-    if (*stack == NULL || (*stack)->next == NULL) {
-        // Si la pila está vacía o tiene solo un nodo, no hay nada que hacer
-        return;
-    }
-
-    NODE *current = *stack;
-    NODE *second = (*stack)->next;
-
-    // Recorre la lista enlazada hasta llegar al último nodo
-    while (current->next != NULL) {
-        current = current->next;
-    }
-
-    // Hace que el último nodo apunte al primer nodo
-    current->next = *stack;
-
-    // Actualiza el tope de la pila al segundo nodo
-    *stack = second;
-
-    // Establece el campo next del nuevo último nodo a NULL
-    current->next->next = NULL;
-}
-
 void inserta_arriba(NODE *node, NODE **stackB)
 {
     if (*stackB == NULL)
@@ -174,97 +160,41 @@ void inserta_arriba(NODE *node, NODE **stackB)
         node->next = *stackB;
         *stackB = node;
     }
-
-    /*node->next = *stackB;
-    *stackB = node;*/
 }
 
-void pb(NODE** stackA, NODE** stackB)
-{
-    if (*stackA == NULL) {
-        return;
-    }
-    
-    // Crear un nuevo nodo y copiar los datos del nodo superior de stackA
-    NODE* nuevo_nodo = malloc(sizeof(NODE));
-    nuevo_nodo->index = (*stackA)->index;
-    nuevo_nodo->next = NULL;
-
-    // Mover el nodo superior de stackA a stackB
-    inserta_arriba(nuevo_nodo, stackB);
-
-    // Eliminar el nodo superior de stackA
-    NODE* temp = *stackA;
-    *stackA = (*stackA)->next;
-    free(temp);
-}
-
-void conectar(NODE **stackA, NODE **stackB)
+void conectar(NODE **stackA, NODE **stackB, int k)
 {
     while(*stackB != NULL)
     {
-        pb(stackB, stackA);
-        printf("\nPb\n");
+        push(stackB, stackA);
+        printf("pb\n");
+        printf("%d\n", k);k++;
     }
-}
-
-void push(NODE** stackA, NODE** stackB)
-{
-    if (*stackA == NULL) {
-        return;
-    }
-    NODE* temp = *stackA;
-    *stackA = (*stackA)->next;
-    temp->next = *stackB;
-    *stackB = temp;
-}
-
-void rotate(NODE** stack) {
-    if (*stack == NULL || (*stack)->next == NULL) {
-        return;
-    }
-    NODE* temp = *stack;
-    while (temp->next->next != NULL) {
-        temp = temp->next;
-    }
-    NODE* lastNode = temp->next;
-    temp->next = NULL;
-    lastNode->next = *stack;
-    *stack = lastNode;
 }
 
 NODE* copiar_lista(NODE* head) {
     if (head == NULL) {
-        return NULL; // Si la lista está vacía, la copia también estará vacía
+        return NULL;
     }
 
-    // Creamos el primer nodo de la copia
     NODE* newHead = malloc(sizeof(NODE));
     newHead->index = head->index;
     newHead->x = head->x;
-    newHead->next = NULL; // La siguiente se actualizará en la iteración
+    newHead->next = NULL;
 
-    // Creamos un puntero para recorrer la lista original
     NODE* currentOriginal = head->next;
-    // Creamos un puntero para recorrer la lista copiada
     NODE* currentCopy = newHead;
 
-    // Recorremos la lista original y creamos nodos para la copia
     while (currentOriginal != NULL) {
         NODE* newNode = malloc(sizeof(NODE));
         newNode->index = currentOriginal->index;
         newNode->x = currentOriginal->x;
         newNode->next = NULL;
-
-        // Enlazamos el nuevo nodo al final de la lista copiada
         currentCopy->next = newNode;
-
-        // Avanzamos al siguiente nodo en ambas listas
         currentOriginal = currentOriginal->next;
         currentCopy = currentCopy->next;
     }
-
-    return newHead; // Devolvemos la cabeza de la lista copiada
+    return newHead;
 }
 
 int isSorted(NODE *stack)
@@ -283,4 +213,80 @@ int isSorted(NODE *stack)
     return 1;
 }
 
+int control_errores_string(char **argv)
+{
+    int j;
 
+    j = 0;
+    while(argv[1][j] != '\0')
+    {
+        if (ft_isalpha(argv[1][j]))
+            return (1);
+        j++;
+    }
+    return (0);
+}
+
+int control_errores_sueltos(char **argv)
+{
+    int i;
+    int j;
+
+    i = 1;
+    while (argv[i] != NULL)
+    {
+        j = 0;
+        while (argv[i][j] != '\0')
+        {
+            if (ft_isalpha(argv[i][j]))
+            {
+                return (1);
+            }
+            j++;
+        }
+        i++;
+    }
+    return (0);
+}
+
+// Función para ordenar el stack
+void radix_sort(NODE** stackA, NODE** stackB) {
+    establecer_valor_1(stackA); // Pasando &stackA para modificar el puntero stackA
+    asignacion_indices(*stackA);
+    establecer_valor_0(stackA);
+    NODE* curr = copiar_lista(*stackA);
+    int digito = 0;
+    int k = 0;
+    
+    while (!isSorted(*stackA)) {
+        while (curr != NULL) {
+            int num = curr->index >> digito & 1;
+            if (num == 1) {
+                ra(stackA);
+                printf("ra\n");
+            } else {
+                push(stackA, stackB);
+                printf("pb\n");
+            }
+            printf("%d\n", k);
+            k++;
+            curr = curr->next;
+        }
+        conectar(stackA, stackB, k);
+        digito++;
+        curr = copiar_lista(*stackA);
+    }
+}
+
+/*void	sort_three(NODE **a)
+{
+	NODE	*biggest_node;
+
+	biggest_node = find_max(*a);
+	if (biggest_node == *a)
+		ra(a, false);
+	else if ((*a)->next == biggest_node)
+		rra(a, false);
+	if ((*a)->nbr > (*a)->next->nbr)
+		sa(a, false);
+}*/
